@@ -1,1 +1,389 @@
-
+```html                                                                                                                                                                                            
+   <!DOCTYPE html>                                                                                                                                                                                  
+   <html lang="en">                                                                                                                                                                                 
+   <head>                                                                                                                                                                                           
+     <meta charset="UTF-8" />                                                                                                                                                                       
+     <title>BTC Macro Dashboard</title>                                                                                                                                                             
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>                                                                                                                                  
+     <style>                                                                                                                                                                                        
+       body {                                                                                                                                                                                       
+         font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;                                                                                                            
+         margin: 0;                                                                                                                                                                                 
+         background: #0e1117;                                                                                                                                                                       
+         color: #f4f4f4;                                                                                                                                                                            
+       }                                                                                                                                                                                            
+       .container {                                                                                                                                                                                 
+         max-width: 1100px;                                                                                                                                                                         
+         margin: auto;                                                                                                                                                                              
+         padding: 2.5rem 1.5rem 4rem;                                                                                                                                                               
+       }                                                                                                                                                                                            
+       header {                                                                                                                                                                                     
+         text-align: center;                                                                                                                                                                        
+         margin-bottom: 2rem;                                                                                                                                                                       
+       }                                                                                                                                                                                            
+       header h1 {                                                                                                                                                                                  
+         margin: 0;                                                                                                                                                                                 
+         font-size: 2rem;                                                                                                                                                                           
+         color: #6dd5fa;                                                                                                                                                                            
+       }                                                                                                                                                                                            
+       header p {                                                                                                                                                                                   
+         margin: 0.5rem 0 0;                                                                                                                                                                        
+         color: #b3b9c6;                                                                                                                                                                            
+       }                                                                                                                                                                                            
+       .grid {                                                                                                                                                                                      
+         display: grid;                                                                                                                                                                             
+         gap: 1.2rem;                                                                                                                                                                               
+       }                                                                                                                                                                                            
+       .grid-3 {                                                                                                                                                                                    
+         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));                                                                                                                               
+       }                                                                                                                                                                                            
+       .grid-2 {                                                                                                                                                                                    
+         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));                                                                                                                               
+       }                                                                                                                                                                                            
+       .card {                                                                                                                                                                                      
+         background: #161b22;                                                                                                                                                                       
+         border: 1px solid #1f2530;                                                                                                                                                                 
+         border-radius: 12px;                                                                                                                                                                       
+         padding: 1.3rem;                                                                                                                                                                           
+         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);                                                                                                                                               
+       }                                                                                                                                                                                            
+       .card h3 {                                                                                                                                                                                   
+         margin-top: 0;                                                                                                                                                                             
+         margin-bottom: 0.5rem;                                                                                                                                                                     
+         color: #6dd5fa;                                                                                                                                                                            
+         font-size: 1rem;                                                                                                                                                                           
+         letter-spacing: 0.03em;                                                                                                                                                                    
+         text-transform: uppercase;                                                                                                                                                                 
+       }                                                                                                                                                                                            
+       .stat {                                                                                                                                                                                      
+         font-size: 1.8rem;                                                                                                                                                                         
+         margin: 0.2rem 0 0.4rem;                                                                                                                                                                   
+         color: #fefefe;                                                                                                                                                                            
+       }                                                                                                                                                                                            
+       .tag {                                                                                                                                                                                       
+         display: inline-block;                                                                                                                                                                     
+         padding: 0.2rem 0.6rem;                                                                                                                                                                    
+         border-radius: 999px;                                                                                                                                                                      
+         font-size: 0.75rem;                                                                                                                                                                        
+         text-transform: uppercase;                                                                                                                                                                 
+         letter-spacing: 0.05em;                                                                                                                                                                    
+         background: rgba(109, 213, 250, 0.15);                                                                                                                                                     
+         color: #6dd5fa;                                                                                                                                                                            
+       }                                                                                                                                                                                            
+       table {                                                                                                                                                                                      
+         width: 100%;                                                                                                                                                                               
+         border-collapse: collapse;                                                                                                                                                                 
+         margin-top: 0.7rem;                                                                                                                                                                        
+         font-size: 0.95rem;                                                                                                                                                                        
+       }                                                                                                                                                                                            
+       table th, table td {                                                                                                                                                                         
+         text-align: left;                                                                                                                                                                          
+         padding: 0.75rem;                                                                                                                                                                          
+         border-bottom: 1px solid #232936;                                                                                                                                                          
+       }                                                                                                                                                                                            
+       table th {                                                                                                                                                                                   
+         color: #9fb4d0;                                                                                                                                                                            
+         font-weight: 600;                                                                                                                                                                          
+         text-transform: uppercase;                                                                                                                                                                 
+         letter-spacing: 0.04em;                                                                                                                                                                    
+         font-size: 0.78rem;                                                                                                                                                                        
+       }                                                                                                                                                                                            
+       ul {                                                                                                                                                                                         
+         padding-left: 1.2rem;                                                                                                                                                                      
+         margin: 0.4rem 0 0;                                                                                                                                                                        
+         color: #d7deed;                                                                                                                                                                            
+       }                                                                                                                                                                                            
+       footer {                                                                                                                                                                                     
+         margin-top: 2rem;                                                                                                                                                                          
+         font-size: 0.75rem;                                                                                                                                                                        
+         color: #8a93a5;                                                                                                                                                                            
+         text-align: center;                                                                                                                                                                        
+       }                                                                                                                                                                                            
+       canvas {                                                                                                                                                                                     
+         max-height: 280px;                                                                                                                                                                         
+       }                                                                                                                                                                                            
+     </style>                                                                                                                                                                                       
+   </head>                                                                                                                                                                                          
+   <body>                                                                                                                                                                                           
+     <div class="container">                                                                                                                                                                        
+       <header>                                                                                                                                                                                     
+         <h1>BTC Macro & Prediction-Market Dashboard</h1>                                                                                                                                           
+         <p>Bayesian view using Polymarket priors & recent crypto market data (updated Mar 10 2026)</p>                                                                                             
+       </header>                                                                                                                                                                                    
+                                                                                                                                                                                                    
+       <!-- Current State -->                                                                                                                                                                       
+       <section class="grid grid-3">                                                                                                                                                                
+         <div class="card">                                                                                                                                                                         
+           <h3>BTC PRICE</h3>                                                                                                                                                                       
+           <p class="stat">$67.4K</p>                                                                                                                                                               
+           <span class="tag">Range-bound</span>                                                                                                                                                     
+           <p>Holding near $67K despite equity & oil volatility. 【CoinDesk】</p>                                                                                                                   
+         </div>                                                                                                                                                                                     
+         <div class="card">                                                                                                                                                                         
+           <h3>VOLATILITY (30D BVIV)</h3>                                                                                                                                                           
+           <p class="stat">~60</p>                                                                                                                                                                  
+           <span class="tag">Contained</span>                                                                                                                                                       
+           <p>Implied vol steady even as traditional markets spike. 【CoinDesk Daybook】</p>                                                                                                        
+         </div>                                                                                                                                                                                     
+         <div class="card">                                                                                                                                                                         
+           <h3>SENTIMENT</h3>                                                                                                                                                                       
+           <p class="stat">FGI 19</p>                                                                                                                                                               
+           <span class="tag">Extreme Fear</span>                                                                                                                                                    
+           <p>Traders lean defensive; hedges in demand. 【BitcoinEthereumNews】</p>                                                                                                                 
+         </div>                                                                                                                                                                                     
+       </section>                                                                                                                                                                                   
+                                                                                                                                                                                                    
+       <!-- Probability Scenarios -->                                                                                                                                                               
+       <section class="card" style="margin-top: 1.5rem;">                                                                                                                                           
+         <h3>Prediction-Market Scenarios</h3>                                                                                                                                                       
+         <canvas id="scenarioChart"></canvas>                                                                                                                                                       
+         <table>                                                                                                                                                                                    
+           <thead>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <th>Scenario</th>                                                                                                                                                                    
+               <th>Probability</th>                                                                                                                                                                 
+               <th>Market Meaning</th>                                                                                                                                                              
+             </tr>                                                                                                                                                                                  
+           </thead>                                                                                                                                                                                 
+           <tbody>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>BTC stays below $150K through Mar 31</td>                                                                                                                                        
+               <td>99%</td>                                                                                                                                                                         
+               <td>Range-trade base case; melt-up priced out. 【Motley Fool / Polymarket】</td>                                                                                                     
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>BTC dips below $45K before Dec 31</td>                                                                                                                                           
+               <td>53%</td>                                                                                                                                                                         
+               <td>Downside flush seen as slightly more likely than not. 【TechStory】</td>                                                                                                         
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>US gas hits $5 by end of March</td>                                                                                                                                              
+               <td>43%</td>                                                                                                                                                                         
+               <td>Inflation shock risk from oil surge. 【Newsweek】</td>                                                                                                                           
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>US recession declared by end-2026</td>                                                                                                                                           
+               <td>30%</td>                                                                                                                                                                         
+               <td>Macro tail still priced, but not base case. 【Economic Times】</td>                                                                                                              
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>BTC breaks above $150K by March</td>                                                                                                                                             
+               <td>1%</td>                                                                                                                                                                          
+               <td>Melt-up tail; upside convexity cheap. 【Motley Fool】</td>                                                                                                                       
+             </tr>                                                                                                                                                                                  
+           </tbody>                                                                                                                                                                                 
+         </table>                                                                                                                                                                                   
+       </section>                                                                                                                                                                                   
+                                                                                                                                                                                                    
+       <!-- Macro Factors & ETF flows -->                                                                                                                                                           
+       <section class="grid grid-2" style="margin-top: 1.5rem;">                                                                                                                                    
+         <div class="card">                                                                                                                                                                         
+           <h3>Macro Factor Watch</h3>                                                                                                                                                              
+           <table>                                                                                                                                                                                  
+             <thead>                                                                                                                                                                                
+               <tr>                                                                                                                                                                                 
+                 <th>Factor</th>                                                                                                                                                                    
+                 <th>Status</th>                                                                                                                                                                    
+                 <th>BTC Implication</th>                                                                                                                                                           
+               </tr>                                                                                                                                                                                
+             </thead>                                                                                                                                                                               
+             <tbody>                                                                                                                                                                                
+               <tr>                                                                                                                                                                                 
+                 <td>Oil & Gas Shock</td>                                                                                                                                                           
+                 <td>$5 gas odds 43%</td>                                                                                                                                                           
+                 <td>Higher CPI → delayed rate cuts → weaker risk appetite.</td>                                                                                                                    
+               </tr>                                                                                                                                                                                
+               <tr>                                                                                                                                                                                 
+                 <td>Fed Policy Path</td>                                                                                                                                                           
+                 <td>Hawkish bias</td>                                                                                                                                                              
+                 <td>USD liquidity tight; ETFs rely on organic inflows.</td>                                                                                                                        
+               </tr>                                                                                                                                                                                
+               <tr>                                                                                                                                                                                 
+                 <td>Dealer Positioning</td>                                                                                                                                                        
+                 <td>Short gamma @ $60K / $75K</td>                                                                                                                                                 
+                 <td>Range reinforcement; breakouts accelerate.</td>                                                                                                                                
+               </tr>                                                                                                                                                                                
+               <tr>                                                                                                                                                                                 
+                 <td>Recession Tail</td>                                                                                                                                                            
+                 <td>30% odds</td>                                                                                                                                                                  
+                 <td>Initial selloff risk, later policy relief optionality.</td>                                                                                                                    
+               </tr>                                                                                                                                                                                
+             </tbody>                                                                                                                                                                               
+           </table>                                                                                                                                                                                 
+         </div>                                                                                                                                                                                     
+                                                                                                                                                                                                    
+         <div class="card">                                                                                                                                                                         
+           <h3>ETF & Treasury Flows (USD billions)</h3>                                                                                                                                             
+           <canvas id="flowChart"></canvas>                                                                                                                                                         
+           <ul>                                                                                                                                                                                     
+             <li>U.S. spot BTC ETFs pulled in ~$0.57B net last week despite volatility. 【TS2.Tech】</li>                                                                                           
+             <li>Strategy (formerly MicroStrategy) bought 17,994 BTC ($1.28B) Mar 2–8, reinforcing the floor. 【TS2.Tech】</li>                                                                     
+           </ul>                                                                                                                                                                                    
+         </div>                                                                                                                                                                                     
+       </section>                                                                                                                                                                                   
+                                                                                                                                                                                                    
+       <!-- Bullish vs Bearish -->                                                                                                                                                                  
+       <section class="grid grid-2" style="margin-top: 1.5rem;">                                                                                                                                    
+         <div class="card">                                                                                                                                                                         
+           <h3>Bulllish Drivers</h3>                                                                                                                                                                
+           <ul>                                                                                                                                                                                     
+             <li>Persistent ETF inflows + corporate treasury accumulation support bids.</li>                                                                                                        
+             <li>Implied vol anchored—room for upside convexity if macro shock dissipates.</li>                                                                                                     
+             <li>Dealer gamma walls mean breaks above $75K could self-reinforce.</li>                                                                                                               
+           </ul>                                                                                                                                                                                    
+         </div>                                                                                                                                                                                     
+         <div class="card">                                                                                                                                                                         
+           <h3>Bearish Drivers</h3>                                                                                                                                                                 
+           <ul>                                                                                                                                                                                     
+             <li>Prediction markets price 53% odds of a sub-$45K flush.</li>                                                                                                                        
+             <li>Oil shock → 43% chance of $5 gas → sticky CPI → slower Fed easing.</li>                                                                                                            
+             <li>Fear & Greed at 19 shows weak risk appetite; funding flatter.</li>                                                                                                                 
+           </ul>                                                                                                                                                                                    
+         </div>                                                                                                                                                                                     
+       </section>                                                                                                                                                                                   
+                                                                                                                                                                                                    
+       <!-- Outlook Table -->                                                                                                                                                                       
+       <section class="card" style="margin-top: 1.5rem;">                                                                                                                                           
+         <h3>Probability-Weighted BTC Outlook</h3>                                                                                                                                                  
+         <table>                                                                                                                                                                                    
+           <thead>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <th>Scenario</th>                                                                                                                                                                    
+               <th>Probability</th>                                                                                                                                                                 
+               <th>Impact</th>                                                                                                                                                                      
+               <th>Direction</th>                                                                                                                                                                   
+             </tr>                                                                                                                                                                                  
+           </thead>                                                                                                                                                                                 
+           <tbody>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>Sub-$150K (range trade)</td>                                                                                                                                                     
+               <td>99%</td>                                                                                                                                                                         
+               <td>Liquidity steady but capped; expect chop.</td>                                                                                                                                   
+               <td>Sideways / mild drift (60–75K)</td>                                                                                                                                              
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>Flush < $45K</td>                                                                                                                                                                
+               <td>53%</td>                                                                                                                                                                         
+               <td>Deleveraging, wider spreads.</td>                                                                                                                                                
+               <td>Bearish toward mid-40Ks</td>                                                                                                                                                     
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>Gas $5 inflation shock</td>                                                                                                                                                      
+               <td>43%</td>                                                                                                                                                                         
+               <td>Hawkish Fed expectations; strong USD.</td>                                                                                                                                       
+               <td>Bearish to low-60Ks</td>                                                                                                                                                         
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>US recession</td>                                                                                                                                                                
+               <td>30%</td>                                                                                                                                                                         
+               <td>Two-stage: selloff then policy support.</td>                                                                                                                                     
+               <td>Mixed (initial down, later rebound)</td>                                                                                                                                         
+             </tr>                                                                                                                                                                                  
+             <tr>                                                                                                                                                                                   
+               <td>Melt-up > $150K</td>                                                                                                                                                             
+               <td>1%</td>                                                                                                                                                                          
+               <td>FOMO inflows, vol spike.</td>                                                                                                                                                    
+               <td>Explosive upside</td>                                                                                                                                                            
+             </tr>                                                                                                                                                                                  
+           </tbody>                                                                                                                                                                                 
+         </table>                                                                                                                                                                                   
+       </section>                                                                                                                                                                                   
+                                                                                                                                                                                                    
+       <footer>                                                                                                                                                                                     
+         Sources: CoinDesk, CoinDesk Daybook, TS2.Tech, TechStory, Newsweek, Economic Times, Motley Fool, BitcoinEthereumNews (all Mar 9–10 2026). Chart data derived from cited articles and       
+ Polymarket-implied probabilities.                                                                                                                                                                  
+       </footer>                                                                                                                                                                                    
+     </div>                                                                                                                                                                                         
+                                                                                                                                                                                                    
+     <script>                                                                                                                                                                                       
+       // Scenario probability chart                                                                                                                                                                
+       const scenarioCtx = document.getElementById('scenarioChart').getContext('2d');                                                                                                               
+       new Chart(scenarioCtx, {                                                                                                                                                                     
+         type: 'bar',                                                                                                                                                                               
+         data: {                                                                                                                                                                                    
+           labels: [                                                                                                                                                                                
+             'Sub-$150K (Mar)',                                                                                                                                                                     
+             'BTC < $45K (2026)',                                                                                                                                                                   
+             'Gas = $5 (Mar)',                                                                                                                                                                      
+             'US Recession (2026)',                                                                                                                                                                 
+             'BTC > $150K (Mar)'                                                                                                                                                                    
+           ],                                                                                                                                                                                       
+           datasets: [{                                                                                                                                                                             
+             label: 'Probability (%)',                                                                                                                                                              
+             data: [99, 53, 43, 30, 1],                                                                                                                                                             
+             backgroundColor: [                                                                                                                                                                     
+               '#4cc9f0',                                                                                                                                                                           
+               '#f3722c',                                                                                                                                                                           
+               '#f8961e',                                                                                                                                                                           
+               '#f9c74f',                                                                                                                                                                           
+               '#90be6d'                                                                                                                                                                            
+             ]                                                                                                                                                                                      
+           }]                                                                                                                                                                                       
+         },                                                                                                                                                                                         
+         options: {                                                                                                                                                                                 
+           responsive: true,                                                                                                                                                                        
+           plugins: {                                                                                                                                                                               
+             legend: { display: false },                                                                                                                                                            
+             tooltip: {                                                                                                                                                                             
+               callbacks: {                                                                                                                                                                         
+                 label: ctx => `${ctx.parsed.y ?? ctx.parsed.x}% chance`                                                                                                                            
+               }                                                                                                                                                                                    
+             }                                                                                                                                                                                      
+           },                                                                                                                                                                                       
+           scales: {                                                                                                                                                                                
+             y: {                                                                                                                                                                                   
+               beginAtZero: true,                                                                                                                                                                   
+               max: 100,                                                                                                                                                                            
+               ticks: { color: '#b3b9c6' },                                                                                                                                                         
+               grid: { color: '#1f2530' }                                                                                                                                                           
+             },                                                                                                                                                                                     
+             x: {                                                                                                                                                                                   
+               ticks: { color: '#b3b9c6' },                                                                                                                                                         
+               grid: { display: false }                                                                                                                                                             
+             }                                                                                                                                                                                      
+           }                                                                                                                                                                                        
+         }                                                                                                                                                                                          
+       });                                                                                                                                                                                          
+                                                                                                                                                                                                    
+       // ETF & Treasury flow chart                                                                                                                                                                 
+       const flowCtx = document.getElementById('flowChart').getContext('2d');                                                                                                                       
+       new Chart(flowCtx, {                                                                                                                                                                         
+         type: 'bar',                                                                                                                                                                               
+         data: {                                                                                                                                                                                    
+           labels: ['Spot BTC ETFs (net inflow)', 'Strategy treasury buy'],                                                                                                                         
+           datasets: [{                                                                                                                                                                             
+             label: 'USD billions',                                                                                                                                                                 
+             data: [0.5685, 1.28],                                                                                                                                                                  
+             backgroundColor: ['#6dd5fa', '#f94144']                                                                                                                                                
+           }]                                                                                                                                                                                       
+         },                                                                                                                                                                                         
+         options: {                                                                                                                                                                                 
+           responsive: true,                                                                                                                                                                        
+           plugins: {                                                                                                                                                                               
+             legend: { display: false },                                                                                                                                                            
+             tooltip: {                                                                                                                                                                             
+               callbacks: {                                                                                                                                                                         
+                 label: ctx => `$${ctx.parsed.y.toFixed(3)}B`                                                                                                                                       
+               }                                                                                                                                                                                    
+             }                                                                                                                                                                                      
+           },                                                                                                                                                                                       
+           scales: {                                                                                                                                                                                
+             y: {                                                                                                                                                                                   
+               beginAtZero: true,                                                                                                                                                                   
+               ticks: {                                                                                                                                                                             
+                 color: '#b3b9c6',                                                                                                                                                                  
+                 callback: value => `$${value}B`                                                                                                                                                    
+               },                                                                                                                                                                                   
+               grid: { color: '#1f2530' }                                                                                                                                                           
+             },                                                                                                                                                                                     
+             x: {                                                                                                                                                                                   
+               ticks: { color: '#b3b9c6' },                                                                                                                                                         
+               grid: { display: false }                                                                                                                                                             
+             }                                                                                                                                                                                      
+           }                                                                                                                                                                                        
+         }                                                                                                                                                                                          
+       });                                                                                                                                                                                          
+     </script>                                                                                                                                                                                      
+   </body>                                                                                                                                                                                          
+   </html>                                                                                                                                                                                          
+ ```

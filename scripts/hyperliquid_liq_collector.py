@@ -146,7 +146,7 @@ async def consume_liquidations(api_key: str) -> None:
         try:
             async with websockets.connect(
                 HYPEDEXER_WS_URL,
-                extra_headers={"Authorization": f"Bearer {api_key}"},
+                additional_headers={"Authorization": f"Bearer {api_key}"},
                 ping_interval=20,
                 ping_timeout=20,
             ) as ws:

@@ -1,0 +1,17 @@
+spec:
+  name: hyperliquid-liq
+  services:
+    - name: liq-worker
+      environment_slug: python
+      instance_size_slug: basic-xxs
+      instance_count: 1
+      run_command: python scripts/hyperliquid_liq_collector.py
+      source_dir: /
+      git:
+        branch: main
+      envs:
+        - key: HYPEDEXER_API_KEY
+          scope: RUN_TIME
+          type: SECRET
+          value: ${HYPEDEXER_API_KEY}
+      build_command: pip install -r requirements.txt
